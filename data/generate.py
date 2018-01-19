@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
   Date Generator
     This code creates data for our date translation model
@@ -13,6 +14,7 @@
 import random
 import json
 import os
+import io
 
 DATA_FOLDER = os.path.realpath(os.path.join(os.path.realpath(__file__), '..'))
 
@@ -87,14 +89,13 @@ def create_dataset(dataset_name, n_examples, vocabulary=False):
     human_vocab = set()
     machine_vocab = set()
 
-    with open(dataset_name, 'w') as f:
+    with io.open(dataset_name, 'w', encoding='utf8') as f:
         for i in range(n_examples):
             h, m, _ = create_date()
             if h is not None:
                 f.write('"'+h + '","' + m + '"\n')
                 human_vocab.update(tuple(h))
                 machine_vocab.update(tuple(m))
-
     if vocabulary:
         int2human = dict(enumerate(human_vocab))
         int2human.update({len(int2human): '<unk>',
